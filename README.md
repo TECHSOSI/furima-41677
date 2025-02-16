@@ -16,7 +16,7 @@
 ### Association
 
 * has_many :items
-* has_many :orders
+* has_one :order
 
 ## items table
 
@@ -26,17 +26,16 @@
 | product_information                 | text       | null: false                    |
 | category︎_id                         | integer    | null: false                    |
 | condition︎_id                        | integer    | null: false                    |
+| shipping_cost︎_id                    | integer    | null: false                    |
+| prefecture︎_id                       | integer    | null: false                    |
+| shipping_date︎_id                    | integer    | null: false                    |
 | price                               | integer    | null: false                    |
-| shipping_cost︎_id                    | string     | null: false                    |
-| shipping_origin︎_id                  | string     | null: false                    |
-| shipping_date︎_id                    | string     | null: false                    |
 | user                                | references | null: false, foreign_key: true |
 
 ### Association
 
 - belongs_to :user
-- has_many :orders
-- has_one :buyer
+- has_one :order
 
 ## orders table
 
@@ -49,17 +48,20 @@
 
 - belongs_to :user
 - belongs_to :item
+- has_one :buyer
 
 ## buyers table
 
 | Column            | Type       | Options                        |
 |-------------------|------------|--------------------------------|
+| post code         | integer    | null: false                    |
 | prefecture︎_id     | integer    | null: false                    |
 | city              | string     | null: false                    |
-| building          | string     | null: true                    |
+| street_address    | string     | null: false                    |
+| building          | string     |                                |
 | telephone         | string     | null: false                    |
-| item              | references | null: false, foreign_key: true |
+| order             | references | null: false, foreign_key: true |
 
 ### Association
 
-- belongs_to :item
+- belongs_to :order
