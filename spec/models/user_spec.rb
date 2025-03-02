@@ -17,7 +17,7 @@ describe User, type: :model do
         @user.valid?
         expect(@user.errors.full_messages).to include("Nickname can't be blank")
       end
-      it 'emailは@を含まないと登録できない' do
+      it 'emailは@が空では登録できない' do
         @user.email = ''
         @user.valid?
         expect(@user.errors.full_messages).to include("Email can't be blank")
@@ -38,6 +38,11 @@ describe User, type: :model do
         @user.password = ''
         @user.valid?
         expect(@user.errors.full_messages).to include("Password can't be blank")
+      end
+        it 'passwordが6文字以上で英数字混合入力でないと登録できない' do
+        @user.password = 'aaaaa'
+        @user.valid?
+        expect(@user.errors.full_messages).to include("Password は6文字以上の半角英数字を含める必要があります。")
       end
       it 'passwordとpassword_confirmationが不一致では登録できない' do
         @user.password = '123456'
