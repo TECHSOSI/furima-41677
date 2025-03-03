@@ -17,7 +17,7 @@ describe User, type: :model do
         @user.valid?
         expect(@user.errors.full_messages).to include("Nickname can't be blank")
       end
-      it 'emailは@が空では登録できない' do
+      it 'emailが空では登録できない' do
         @user.email = ''
         @user.valid?
         expect(@user.errors.full_messages).to include("Email can't be blank")
@@ -39,10 +39,20 @@ describe User, type: :model do
         @user.valid?
         expect(@user.errors.full_messages).to include("Password can't be blank")
       end
-        it 'passwordが6文字以上で英数字混合入力でないと登録できない' do
-        @user.password = 'aaaaa'
+      it '英字のみのパスワードでは登録できない' do
+        @user.password = 'aaaaaa'
         @user.valid?
-        expect(@user.errors.full_messages).to include("Password は6文字以上の半角英数字を含める必要があります。")
+        expect(@user.errors.full_messages).to include("Password は半角英数字を含む必要があります。")
+      end
+      it '数字のみのパスワードでは登録できない' do
+        @user.password = '123456'
+        @user.valid?
+        expect(@user.errors.full_messages).to include("Password は半角英数字を含む必要があります。")
+      end
+      it '全角文字を含むパスワードでは登録できない' do
+        @user.password = 'ああああああ'
+        @user.valid?
+        expect(@user.errors.full_messages).to include("Password は半角英数字を含む必要があります。")
       end
       it 'passwordとpassword_confirmationが不一致では登録できない' do
         @user.password = '123456'
@@ -55,10 +65,20 @@ describe User, type: :model do
         @user.valid?
         expect(@user.errors.full_messages).to include("Last name can't be blank")
       end
+      it '姓（全角）に半角文字が含まれていると登録できない' do
+        @user.last_name = 'abc'
+        @user.valid?
+        expect(@user.errors.full_messages).to include("Last name は全角日本語で入力してください。")
+      end
       it 'first_nameが空では登録できない' do
         @user.first_name = ''
         @user.valid?
         expect(@user.errors.full_messages).to include("First name can't be blank")
+      end
+      it '名（全角）に半角文字が含まれていると登録できない' do
+        @user.first_name = 'abc'
+        @user.valid?
+        expect(@user.errors.full_messages).to include("First name は全角日本語で入力してください。")
       end
       it 'last_name_kanaが空では登録できない' do
         @user.last_name_kana = ''
