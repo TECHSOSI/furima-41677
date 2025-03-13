@@ -37,7 +37,7 @@ RSpec.describe Item, type: :model do
         expect(@item.errors.full_messages).to include("Category can't be blank")
       end  
       it 'カテゴリーに「---」が選択されている場合は出品できない' do
-        @item.category_id = '1'
+        @item.category_id = '0'
         @item.valid?
         expect(@item.errors.full_messages).to include("Category can't be blank")
       end  
@@ -48,7 +48,7 @@ RSpec.describe Item, type: :model do
       end 
       
       it '状態に「---」が選択されている場合は出品できない' do
-        @item.condition_id = '1'
+        @item.condition_id = '0'
         @item.valid?
         expect(@item.errors.full_messages).to include("Condition can't be blank")
       end  
@@ -59,7 +59,7 @@ RSpec.describe Item, type: :model do
         expect(@item.errors.full_messages).to include("Shipping cost can't be blank")
       end
       it '配送料の負担に「---」が選択されている場合は出品できない' do
-        @item.shipping_cost_id = '1'
+        @item.shipping_cost_id = '0'
         @item.valid?
         expect(@item.errors.full_messages).to include("Shipping cost can't be blank")
       end  
@@ -69,7 +69,7 @@ RSpec.describe Item, type: :model do
         expect(@item.errors.full_messages).to include("Prefecture can't be blank")
       end
       it '発送元の地域に「---」が選択されている場合は出品できない' do
-        @item.prefecture_id = '1'
+        @item.prefecture_id = '0'
         @item.valid?
         expect(@item.errors.full_messages).to include("Prefecture can't be blank")
       end
@@ -80,7 +80,7 @@ RSpec.describe Item, type: :model do
         expect(@item.errors.full_messages).to include("Shipping date can't be blank")
       end  
       it '発送までの日数に「---」が選択されている場合は出品できない' do
-        @item.shipping_date_id = '1'
+        @item.shipping_date_id = '0'
         @item.valid?
         expect(@item.errors.full_messages).to include("Shipping date can't be blank")
       end  
@@ -88,20 +88,20 @@ RSpec.describe Item, type: :model do
       it '価格が空だと出品できない' do
         @item.price = ''
         @item.valid? 
-        expect(@item.errors.full_messages).to include("Price is not a number", "Price Price is invalid.harf-width characters")
+        expect(@item.errors.full_messages).to include("Price must be between ¥300 and ¥9,999,999 (half-width numbers only)")
 
       end  
       
       it '価格は全角文字が含まれると出品できない' do
         @item.price = '５００'
         @item.valid? 
-        expect(@item.errors.full_messages).to include("Price is not a number")
+        expect(@item.errors.full_messages).to include("Price must be between ¥300 and ¥9,999,999 (half-width numbers only)")
       end
       it '価格は300円以上でないと出品できない' do
         @item.price = '299'
         @item.valid?
         
-        expect(@item.errors.full_messages).to include("Price must be greater than 299")
+        expect(@item.errors.full_messages).to include("Price must be between ¥300 and ¥9,999,999 (half-width numbers only)")
     
       end
 
@@ -109,7 +109,7 @@ RSpec.describe Item, type: :model do
         @item.price = '10_000_000'
         @item.valid?
         
-        expect(@item.errors.full_messages).to include("Price must be an integer")
+        expect(@item.errors.full_messages).to include("Price must be between ¥300 and ¥9,999,999 (half-width numbers only)")
       end 
       #出品者情報
       it 'userが紐付いていなければ出品できない' do
