@@ -6,7 +6,7 @@ const price = () => {
   addTaxDom.innerHTML = `${inputValue * 0.1}`;
   const addProfitDom = document.getElementById("profit");
   addProfitDom.innerHTML = `${inputValue-inputValue * 0.1}`;
-  console.log(inputValue);
+
   })
 
 };
