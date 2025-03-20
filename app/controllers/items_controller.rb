@@ -33,8 +33,6 @@ class ItemsController < ApplicationController
     else
       render :edit, status: :unprocessable_entity
     end
-    #item.update(item_params)
-    #redirect_to root_path
   end
 
   private
