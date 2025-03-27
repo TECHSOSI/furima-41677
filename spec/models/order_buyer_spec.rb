@@ -2,9 +2,9 @@ require 'rails_helper'
 
 RSpec.describe OrderBuyer, type: :model do
   before do
-    @user = FactoryBot.create(:user)
-    @item = FactoryBot.create(:item)
-    @order_buyer = FactoryBot.build(:order_buyer)
+    user = FactoryBot.create(:user)
+    item = FactoryBot.create(:item)
+    @order_buyer = FactoryBot.build(:order_buyer, user_id: user.id, item_id: item.id)
     sleep 0.1
   end
   describe '発送情報の保存' do
@@ -20,6 +20,19 @@ RSpec.describe OrderBuyer, type: :model do
       end
     end
     context '内容に問題がある場合' do
+      
+      it 'userが紐付いていない場合は保存できない' do
+        @order_buyer.user_id = nil
+        @order_buyer.valid?
+        expect(@order_buyer.errors.full_messages).to include("User can't be blank")
+      end
+
+      it 'itemが紐付いていない場合は保存できない' do
+        @order_buyer.item_id = nil
+        @order_buyer.valid?
+        expect(@order_buyer.errors.full_messages).to include("Item can't be blank")
+      end
+
       it 'post_codeが空だと保存できないこと' do
         @order_buyer.post_code = ''
         @order_buyer.valid?
@@ -62,6 +75,18 @@ RSpec.describe OrderBuyer, type: :model do
         expect(@order_buyer.errors.full_messages).to include('Telephone input only number')
       end
       
+      it '電話番号が9桁以下の場合保存できない' do
+        @order_buyer.telephone = '012345678'
+        @order_buyer.valid?
+        expect(@order_buyer.errors.full_messages).to include('Telephone input only number')
+      end
+
+      it '電話番号が12桁以上の場合保存できない' do
+        @order_buyer.telephone = '012345678910'
+        @order_buyer.valid?
+        expect(@order_buyer.errors.full_messages).to include('Telephone input only number')
+      end
+
       it "tokenが空では登録できないこと" do
         @order_buyer.token = nil
         @order_buyer.valid?
