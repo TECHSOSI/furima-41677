@@ -54,8 +54,8 @@
 
 | Column            | Type       | Options                        |
 |-------------------|------------|--------------------------------|
-| post code         | integer    | null: false                    |
-| prefecture︎_id     | integer    | null: false                    |
+| post_code         | integer    | null: false                    |
+| prefecture_id     | integer    | null: false                    |
 | city              | string     | null: false                    |
 | street_address    | string     | null: false                    |
 | building          | string     |                                |

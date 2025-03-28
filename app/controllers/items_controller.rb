@@ -25,6 +25,9 @@ class ItemsController < ApplicationController
   end
  
   def edit
+    return if @item.order.nil?
+
+    redirect_to root_path
   end
 
   def update
@@ -54,6 +57,8 @@ class ItemsController < ApplicationController
     end
   end
 
+
+  
 end
 
 
